@@ -18,6 +18,10 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
+
+
+
+
 	GameApplication::initScene();
 	// initialise array of 3 vertices
 
@@ -109,6 +113,15 @@ void MyGame::destroyScene()
 
 void MyGame::render()
 {
+
+
+	//
+	//
+	//			Shadow mapping (unfinished)
+	//
+	////////////////////////////////////////////////////
+
+
 	//glGenTextures(1, &depthMap);
 	//glBindTexture(GL_TEXTURE_2D, depthMap);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
@@ -123,6 +136,9 @@ void MyGame::render()
 	//glDrawBuffer(GL_NONE);
 	//glReadBuffer(GL_NONE);
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
 
 	GameApplication::render();
 	for (auto& go : m_GameObjectList)
