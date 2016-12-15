@@ -102,7 +102,19 @@ void GameApplication::onBeginRender()
 	//set the clear colour (background)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	//clear the colour and depth buffer
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//glClearStencil(0);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	//glDepthMask(GL_FALSE);
+	//glEnable(GL_STENCIL_TEST);
+
+	//glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
+	//glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
 }
 
 void GameApplication::onEndRender()

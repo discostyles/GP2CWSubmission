@@ -30,9 +30,9 @@ uniform sampler2D normalSampler;
 
 void main()
 {
-	vec3 bumpNormals = normalize(((texture(normalSampler, vertexTextureCoordsOut).xyz))*2.0f - 1.0f);
+//	vec3 bumpNormals = normalize(((texture(normalSampler, vertexTextureCoordsOut).xyz))*2.0f - 1.0f);
 
-	//bumpNormals = normalize((bumpNormals.x * 2.0f) - 1.0f, (bumpNormals.y * 2.0f) - 1.0f, (bumpNormals.z * 2.0f) - 1.0f);
+	bumpNormals = normalize((bumpNormals.x * 2.0f) - 1.0f, (bumpNormals.y * 2.0f) - 1.0f, (bumpNormals.z * 2.0f) - 1.0f);
 
 	vec3 lightDir=normalize(-directionLight.direction);
 	float diffuseTerm = dot(bumpNormals, lightDir);
@@ -43,5 +43,10 @@ void main()
 
 	vec4 diffuseTextureColour = texture(diffuseSampler, vertexTextureCoordsOut);
 
+	vertexNormalOut = bumpNormals; // LUL
+
 	FragColor = (ambientMaterialColour*directionLight.ambientColour) + (diffuseTextureColour*directionLight.diffuseColour*diffuseTerm) + (speclarTextureColour*directionLight.specularColour*specularTerm);
+
+
+
 }

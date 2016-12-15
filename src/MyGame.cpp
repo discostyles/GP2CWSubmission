@@ -99,19 +99,12 @@ void MyGame::initScene()
 void MyGame::destroyScene()
 {
 	GameApplication::destroyScene();
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnDestroy();
 	}
 	m_GameObjectList.clear();
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 }
 
 void MyGame::render()
@@ -142,6 +135,7 @@ void MyGame::render()
 		{
 			glUniform3fv(ViewLocation, 1, glm::value_ptr(m_CameraPos));
 		}
+
 		GLint LightDirection = glGetUniformLocation(currentShader, "directionLight.direction");
 		if (LightDirection != -1)
 		{
@@ -158,6 +152,7 @@ void MyGame::render()
 			glUniform4fv(DiffuseColour, 1, glm::value_ptr(m_DiffuseLightColour));
 		}
 		GLint SpecularColour = glGetUniformLocation(currentShader, "directionLight.specularColour");
+
 		if (SpecularColour != -1)
 		{
 			glUniform4fv(SpecularColour, 1, glm::value_ptr(m_SpecularLightColour));
@@ -182,11 +177,7 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
-<<<<<<< HEAD
-	m_TeaPot->OnUpdate();
 
-=======
->>>>>>> origin/master
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnUpdate();
