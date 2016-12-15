@@ -8,7 +8,9 @@ GameObject * loadModelFromFile(const string & filename)
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 	aiColor4D whiteColour(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	//const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_GenUVCoords | aiProcess_CalcTangentSpace | aiProcess_OptimizeGraph);
+	LOG(INFO, aiGetErrorString());
 
 	if (scene)
 	{

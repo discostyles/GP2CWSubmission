@@ -1,0 +1,5 @@
+Unable to load material library
+Unable to read material "u_6" in .mtl file
+Unable to read material "_h_axe" in .mtl file
+Unable to read material "u_6" in .mtl file
+Unable to read material "_h_axe" in .mtl file

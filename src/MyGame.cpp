@@ -80,7 +80,7 @@ void MyGame::initScene()
 	//m_TestObject->LoadTexture(texturePath);
 	//m_TestObject->CopyVertexData(verts, Indices, 4, 6);
 
-	std::string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
+	std::string modelPath = ASSET_PATH + MODEL_PATH + "/1h_axe.fbx";
 	m_TeaPot = loadModelFromFile(modelPath);
 	m_TeaPot->LoadShaders(vsPath, fsPath);
 	m_TeaPot->LoadDiffuseTexture(texturePath);
