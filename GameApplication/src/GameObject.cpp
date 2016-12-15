@@ -47,6 +47,7 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 {
 	//glUseProgram(m_ShaderProgram);
 	glBindVertexArray(m_VAO);
+	
 
 
 	GLint ModelLocation = glGetUniformLocation(m_ShaderProgram, "Model");
@@ -142,6 +143,7 @@ void GameObject::OnDestroy()
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteSamplers(1, &m_Sampler);
+	//glDeleteFramebuffers(1, &framebuffer);
 }
 
 void GameObject::LoadDiffuseTexture(const string & filename)

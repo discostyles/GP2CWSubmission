@@ -48,6 +48,8 @@ public:
 
 	virtual void onKeyDown(SDL_Keycode keyCode);
 
+	
+
 protected:
 	ProgramOptions m_Options;
 	//SDL windows
@@ -59,5 +61,6 @@ protected:
 	string m_WindowTitle;
 	bool m_bIsRunning;
 	void parseConfig(int args,char * arg[]);
+
 };
 #endif

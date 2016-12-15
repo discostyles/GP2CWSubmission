@@ -31,6 +31,11 @@ private:
 	/*GLuint m_VBO;
 	GLuint m_VAO;*/
 
+	GLuint m_DepthFBO;
+
+	const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+	GLuint depthMap;
+
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;

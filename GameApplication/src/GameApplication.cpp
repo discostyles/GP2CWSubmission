@@ -63,6 +63,8 @@ bool GameApplication::init(int args,char * arg[])
 	initGraphics();
 	initScene();
 
+
+
 	m_bIsRunning = true;
 	return true;
 }
@@ -165,6 +167,7 @@ void GameApplication::initGraphics()
 
 	//set our viewport 
 	setViewport((int)m_WindowWidth, (int)m_WindowHeight);
+
 }
 
 void GameApplication::setViewport(int width, int height)
