@@ -107,28 +107,13 @@ void MyGame::initScene()
 void MyGame::destroyScene()
 {
 	GameApplication::destroyScene();
-<<<<<<< HEAD
-	m_TeaPot->OnDestroy();
 
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnDestroy();
 	}
 	m_GameObjectList.clear();
->>>>>>> origin/master
+
 }
 
 void MyGame::render()
@@ -199,17 +184,12 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
-<<<<<<< HEAD
 	m_TeaPot->OnUpdate();
 
-
-
-=======
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnUpdate();
 	}
->>>>>>> origin/master
 }
 
 void MyGame::onKeyDown(SDL_Keycode keyCode)
