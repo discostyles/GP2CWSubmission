@@ -30,15 +30,20 @@ public:
 private:
 	/*GLuint m_VBO;
 	GLuint m_VAO;*/
+<<<<<<< HEAD
 
 	GLuint m_DepthFBO;
 
 	const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	GLuint depthMap;
 
+=======
+>>>>>>> origin/master
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;
+
+	vector<shared_ptr<GameObject> > m_GameObjectList;
 
 	vec3 m_LightDirection;
 	vec4 m_AmbientLightColour;

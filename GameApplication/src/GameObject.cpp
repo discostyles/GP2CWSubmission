@@ -206,6 +206,11 @@ void GameObject::LoadShaders(const string & vsFilename, const string & fsFilenam
 	glDeleteShader(fragmentShaderProgram);
 }
 
+void GameObject::SetObjectPosition(const vec3 & position)
+{
+	m_Position = position;
+}
+
 void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numberOfVertices, int numberOfIndices)
 {
 	m_NumberOfVerts = numberOfVertices;
