@@ -38,6 +38,7 @@ private:
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;
+	vec3 m_LookatPos;
 
 	Camera camera;
 

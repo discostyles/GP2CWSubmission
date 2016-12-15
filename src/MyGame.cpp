@@ -90,6 +90,7 @@ void MyGame::initScene()
 	}
 
 	m_CameraPos = camera.GetCameraPos();
+	m_LookatPos = camera.GetLookatPos();
 	m_LightDirection = vec3(0.0f, 0.0f, -1.0f);
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_DiffuseLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -163,8 +164,9 @@ void MyGame::update()
 {
 	GameApplication::update();
 	m_CameraPos = camera.GetCameraPos();
+	m_LookatPos = camera.GetLookatPos();
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
-	m_ViewMatrix = lookAt(m_CameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
 
 	for (auto& go : m_GameObjectList)
 	{
