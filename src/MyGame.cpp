@@ -78,14 +78,6 @@ void MyGame::initScene()
 
 	for (int i = 0; i < 2; i++)
 	{
-		/*std::string vsPath = vShaders[i];
-		std::string fsPath = fShaders[i];
-		string texturePath = texPaths[i];
-		string speclarPath = specPaths[i];
-		string bumpPath = bumpPaths[i];
-		string heightPath = heightPaths[i];
-		std::string modelPath = modelPaths[i];*/
-
 		shared_ptr<GameObject> m_TestGO = shared_ptr<GameObject>(loadModelFromFile(modelPaths[i]));
 		m_TestGO->LoadShaders(vShaders[i], fShaders[i]);
 		m_TestGO->LoadDiffuseTexture(texPaths[i]);
@@ -107,13 +99,19 @@ void MyGame::initScene()
 void MyGame::destroyScene()
 {
 	GameApplication::destroyScene();
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnDestroy();
 	}
 	m_GameObjectList.clear();
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }
 
 void MyGame::render()
@@ -184,8 +182,11 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
+<<<<<<< HEAD
 	m_TeaPot->OnUpdate();
 
+=======
+>>>>>>> origin/master
 	for (auto& go : m_GameObjectList)
 	{
 		go->OnUpdate();
