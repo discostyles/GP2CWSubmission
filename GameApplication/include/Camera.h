@@ -17,6 +17,7 @@ public:
 private:
 	vec3 m_CameraPos;
 	vec3 m_LookatPos;
+	vec3 m_Rotation;
 
 };
 #endif
