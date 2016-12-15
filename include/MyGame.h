@@ -38,10 +38,10 @@ private:
 	//GLuint depthMap;
 
 
-	//GLuint m_DepthFBO;
+	GLuint m_DepthFBO;
 
-	//const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-	//GLuint depthMap;
+	const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+	GLuint depthMap;
 
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
