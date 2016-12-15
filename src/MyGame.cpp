@@ -93,7 +93,8 @@ void MyGame::initScene()
 		m_GameObjectList.push_back(m_TestGO);
 	}
 
-	m_CameraPos = vec3(0.0f, 0.0f, 15.0f);
+	m_CameraPos = camera.GetCameraPos();
+	m_LookatPos = camera.GetLookatPos();
 	m_LightDirection = vec3(0.0f, 0.0f, -1.0f);
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_DiffuseLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -180,11 +181,11 @@ void MyGame::render()
 
 void MyGame::update()
 {
-
-
-
 	GameApplication::update();
+	m_CameraPos = camera.GetCameraPos();
+	m_LookatPos = camera.GetLookatPos();
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
+<<<<<<< HEAD
 	m_ViewMatrix = lookAt(m_CameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	/*mat4 translation = translate(mat4(1.0), vec3(0.0f, 0.0f, -1.0f));
@@ -193,6 +194,9 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
+=======
+	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
+>>>>>>> origin/master
 
 	for (auto& go : m_GameObjectList)
 	{
@@ -202,20 +206,5 @@ void MyGame::update()
 
 void MyGame::onKeyDown(SDL_Keycode keyCode)
 {
-	if (keyCode == SDLK_LEFT)
-	{
-		m_CameraPos.x -= 0.1f;
-	}
-	if (keyCode == SDLK_RIGHT)
-	{
-		m_CameraPos.x += 0.1f;
-	}
-	if (keyCode == SDLK_UP)
-	{
-		m_CameraPos.z -= 0.1f;
-	}
-	if (keyCode == SDLK_DOWN)
-	{
-		m_CameraPos.z += 0.1f;
-	}
+	camera.OnKeyDown(keyCode);
 }

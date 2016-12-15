@@ -2,6 +2,7 @@
 #define _MyGame_H
 
 #include "GameApplication.h"
+#include "Camera.h";
 
 class MyGame:public GameApplication
 {
@@ -46,6 +47,9 @@ private:
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;
+	vec3 m_LookatPos;
+
+	Camera camera;
 
 	vector<shared_ptr<GameObject> > m_GameObjectList;
 
