@@ -30,10 +30,11 @@ public:
 private:
 	/*GLuint m_VBO;
 	GLuint m_VAO;*/
-
 	GameObject* m_TestObject;
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;
+
+	vector<shared_ptr<GameObject> > m_GameObjectList;
 
 	vec3 m_LightDirection;
 	vec4 m_AmbientLightColour;

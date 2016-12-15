@@ -67,27 +67,36 @@ void MyGame::initScene()
 	//{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
 	//{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
 	};
-	//generate a VBO, bind it to the pipeline and fill it with information
-	
-	//m_TestObject = new GameObject();
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
-	//m_TestObject->LoadShaders(vsPath, fsPath);
-	string texturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
-	string speclarPath = ASSET_PATH + TEXTURE_PATH + "/earth_spec.png";
-	string bumpPath = ASSET_PATH + TEXTURE_PATH + "/earth_norm.png";
-	string heightPath = ASSET_PATH + TEXTURE_PATH + "/earth_height.png";
-	//m_TestObject->LoadTexture(texturePath);
-	//m_TestObject->CopyVertexData(verts, Indices, 4, 6);
 
-	std::string modelPath = ASSET_PATH + MODEL_PATH + "/1h_axe.fbx";
-	m_TeaPot = loadModelFromFile(modelPath);
-	m_TeaPot->LoadShaders(vsPath, fsPath);
-	m_TeaPot->LoadDiffuseTexture(texturePath);
-	m_TeaPot->LoadSpeclarTexture(speclarPath);
-	m_TeaPot->LoadNormalTexture(bumpPath);
-	m_TeaPot->LoadHeightTexture(heightPath);
-	m_TeaPot->SetAmbientMaterial(vec4(0.1f, 0.1f, 0.1f, 1.0f));
+	string vShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl" };
+	string fShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl" };
+	string texPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_diff.png", ASSET_PATH + TEXTURE_PATH + "/earth_diff.png" };
+	string specPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_spec.png", ASSET_PATH + TEXTURE_PATH + "/earth_spec.png" };
+	string bumpPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_norm.png", ASSET_PATH + TEXTURE_PATH + "/earth_norm.png" };
+	string heightPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_height.png", ASSET_PATH + TEXTURE_PATH + "/earth_height.png" };
+	string modelPaths[] = { ASSET_PATH + MODEL_PATH + "/Earth.fbx", ASSET_PATH + MODEL_PATH + "/Earth.fbx" };
+
+	for (int i = 0; i < 2; i++)
+	{
+		/*std::string vsPath = vShaders[i];
+		std::string fsPath = fShaders[i];
+		string texturePath = texPaths[i];
+		string speclarPath = specPaths[i];
+		string bumpPath = bumpPaths[i];
+		string heightPath = heightPaths[i];
+		std::string modelPath = modelPaths[i];*/
+
+		shared_ptr<GameObject> m_TestGO = shared_ptr<GameObject>(loadModelFromFile(modelPaths[i]));
+		m_TestGO->LoadShaders(vShaders[i], fShaders[i]);
+		m_TestGO->LoadDiffuseTexture(texPaths[i]);
+		m_TestGO->LoadSpeclarTexture(specPaths[i]);
+		m_TestGO->LoadNormalTexture(bumpPaths[i]);
+		m_TestGO->LoadHeightTexture(heightPaths[i]);
+		m_TestGO->SetAmbientMaterial(vec4(0.1f, 0.1f, 0.1f, 1.0f));
+		m_TestGO->SetObjectPosition(vec3(-5.0f + (i*10), 0.0f, 0));
+		m_GameObjectList.push_back(m_TestGO);
+	}
+
 	m_CameraPos = vec3(0.0f, 0.0f, 15.0f);
 	m_LightDirection = vec3(0.0f, 0.0f, -1.0f);
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -98,41 +107,49 @@ void MyGame::initScene()
 void MyGame::destroyScene()
 {
 	GameApplication::destroyScene();
-	m_TeaPot->OnDestroy();
+	for (auto& go : m_GameObjectList)
+	{
+		go->OnDestroy();
+	}
+	m_GameObjectList.clear();
 }
 
 void MyGame::render()
 {
 	GameApplication::render();
-	GLuint currentShader = m_TeaPot->GetShaderProgram();
-	glUseProgram(currentShader);
-	GLint ViewLocation = glGetUniformLocation(currentShader, "cameraPos");
-	if (ViewLocation != -1)
+	for (auto& go : m_GameObjectList)
 	{
-		glUniform3fv(ViewLocation, 1, glm::value_ptr(m_CameraPos));
-	}
-	GLint LightDirection = glGetUniformLocation(currentShader, "directionLight.direction");
-	if (LightDirection != -1)
-	{
-		glUniform3fv(LightDirection, 1, glm::value_ptr(m_LightDirection));
-	}
-	GLint AmbientColour = glGetUniformLocation(currentShader, "directionLight.ambientColour");
-	if (AmbientColour != -1)
-	{
-		glUniform4fv(AmbientColour, 1, glm::value_ptr(m_AmbientLightColour));
-	}
-	GLint DiffuseColour = glGetUniformLocation(currentShader, "directionLight.diffuseColour");
-	if (DiffuseColour != -1)
-	{
-		glUniform4fv(DiffuseColour, 1, glm::value_ptr(m_DiffuseLightColour));
-	}
-	GLint SpecularColour = glGetUniformLocation(currentShader, "directionLight.specularColour");
-	if (SpecularColour != -1)
-	{
-		glUniform4fv(SpecularColour, 1, glm::value_ptr(m_SpecularLightColour));
-	}
 
-	m_TeaPot->OnRender(m_ViewMatrix, m_ProjMatrix);
+		GLuint currentShader = go->GetShaderProgram();
+		glUseProgram(currentShader);
+		GLint ViewLocation = glGetUniformLocation(currentShader, "cameraPos");
+		if (ViewLocation != -1)
+		{
+			glUniform3fv(ViewLocation, 1, glm::value_ptr(m_CameraPos));
+		}
+		GLint LightDirection = glGetUniformLocation(currentShader, "directionLight.direction");
+		if (LightDirection != -1)
+		{
+			glUniform3fv(LightDirection, 1, glm::value_ptr(m_LightDirection));
+		}
+		GLint AmbientColour = glGetUniformLocation(currentShader, "directionLight.ambientColour");
+		if (AmbientColour != -1)
+		{
+			glUniform4fv(AmbientColour, 1, glm::value_ptr(m_AmbientLightColour));
+		}
+		GLint DiffuseColour = glGetUniformLocation(currentShader, "directionLight.diffuseColour");
+		if (DiffuseColour != -1)
+		{
+			glUniform4fv(DiffuseColour, 1, glm::value_ptr(m_DiffuseLightColour));
+		}
+		GLint SpecularColour = glGetUniformLocation(currentShader, "directionLight.specularColour");
+		if (SpecularColour != -1)
+		{
+			glUniform4fv(SpecularColour, 1, glm::value_ptr(m_SpecularLightColour));
+		}
+
+		go->OnRender(m_ViewMatrix, m_ProjMatrix);
+	}
 }
 
 void MyGame::update()
@@ -147,7 +164,10 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
-	m_TeaPot->OnUpdate();
+	for (auto& go : m_GameObjectList)
+	{
+		go->OnUpdate();
+	}
 }
 
 void MyGame::onKeyDown(SDL_Keycode keyCode)
@@ -155,5 +175,17 @@ void MyGame::onKeyDown(SDL_Keycode keyCode)
 	if (keyCode == SDLK_LEFT)
 	{
 		m_CameraPos.x -= 0.1f;
+	}
+	if (keyCode == SDLK_RIGHT)
+	{
+		m_CameraPos.x += 0.1f;
+	}
+	if (keyCode == SDLK_UP)
+	{
+		m_CameraPos.z -= 0.1f;
+	}
+	if (keyCode == SDLK_DOWN)
+	{
+		m_CameraPos.z += 0.1f;
 	}
 }
