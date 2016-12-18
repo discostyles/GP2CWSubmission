@@ -20,6 +20,8 @@ GameObject::GameObject()
 	m_Position = vec3(0.0f, 0.0f, 0.0f);
 	m_Rotation = vec3(0.0f, 0.0f, 0.0f);
 	m_Scale = vec3(1.0f, 1.0f, 1.0f);
+	m_MinBounds = vec3(0.0f, 0.0f, 0.0f);
+	m_MaxBounds = vec3(0.0f, 0.0f, 0.0f);
 	m_NumberOfVerts = 0;
 	m_NumberOfIndices = 0;
 
@@ -206,6 +208,16 @@ void GameObject::LoadShaders(const string & vsFilename, const string & fsFilenam
 	glDeleteShader(fragmentShaderProgram);
 }
 
+vec3 GameObject::GetMinBounds()
+{
+	return m_MinBounds;
+}
+
+vec3 GameObject::GetMaxBounds()
+{
+	return m_MaxBounds;
+}
+
 void GameObject::SetObjectPosition(const vec3 & position)
 {
 	m_Position = position;
@@ -215,6 +227,7 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 {
 	m_NumberOfVerts = numberOfVertices;
 	m_NumberOfIndices = numberOfIndices;
+	CalculateBoundingBox(pVertex, numberOfVertices);
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, numberOfVertices * sizeof(Vertex), pVertex, GL_STATIC_DRAW);
@@ -240,4 +253,41 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, tangent));
 	glEnableVertexAttribArray(5);
 	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, binormal));
+}
+
+void GameObject::CalculateBoundingBox(Vertex *pVertex, int numberOfVertices)
+{
+	m_MinBounds.x = pVertex[0].position.x;
+	m_MinBounds.y = pVertex[0].position.y;
+	m_MinBounds.z = pVertex[0].position.z;
+	m_MaxBounds.x = pVertex[0].position.x;
+	m_MaxBounds.y = pVertex[0].position.y;
+	m_MaxBounds.z = pVertex[0].position.z;
+	for (int i = 1; i < numberOfVertices; i++)
+	{
+		if (pVertex[i].position.x < m_MinBounds.x)
+		{
+			m_MinBounds.x = pVertex[i].position.x;
+		}
+		if (pVertex[i].position.x > m_MaxBounds.x)
+		{
+			m_MaxBounds.x = pVertex[i].position.x;
+		}
+		if (pVertex[i].position.y < m_MinBounds.y)
+		{
+			m_MinBounds.y = pVertex[i].position.y;
+		}
+		if (pVertex[i].position.y > m_MaxBounds.y)
+		{
+			m_MaxBounds.y = pVertex[i].position.y;
+		}
+		if (pVertex[i].position.z < m_MinBounds.z)
+		{
+			m_MinBounds.z = pVertex[i].position.z;
+		}
+		if (pVertex[i].position.z > m_MaxBounds.z)
+		{
+			m_MaxBounds.z = pVertex[i].position.z;
+		}
+	}
 }

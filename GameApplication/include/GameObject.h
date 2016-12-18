@@ -23,9 +23,14 @@ public:
 	void LoadHeightTexture(const string& filename);
 	void LoadShaders(const string& vsFilename, const string& fsFilename);
 
+	vec3 GetMinBounds();
+	vec3 GetMaxBounds();
+
 	void SetObjectPosition(const vec3& position);
 
 	void CopyVertexData(Vertex *pVertex, unsigned int* indices, int numberOfVertices, int numberOfIndices);
+
+	void CalculateBoundingBox(Vertex *pVertex, int numberOfVertices);
 
 	GLuint GetShaderProgram()
 	{
@@ -54,6 +59,8 @@ private:
 	vec3 m_Position;
 	vec3 m_Rotation;
 	vec3 m_Scale;
+	vec3 m_MinBounds;
+	vec3 m_MaxBounds;
 
 	vec4 m_AmbientMaterialColour;
 	vec4 m_DiffuseMaterialColour;

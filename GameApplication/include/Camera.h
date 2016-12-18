@@ -2,6 +2,7 @@
 #define _CAMERA_H
 
 #include "Common.h"
+#include "GameApplication.h"
 
 class Camera
 {
@@ -14,10 +15,19 @@ public:
 
 	void OnKeyDown(SDL_Keycode keyCode);
 
+	void SetBool(bool collision);
+	
+
 private:
 	vec3 m_CameraPos;
 	vec3 m_LookatPos;
 	vec3 m_Rotation;
+	vec3 m_MinBounds;
+	vec3 m_MaxBounds;
+
+	bool colliding;
+
+	
 
 };
 #endif

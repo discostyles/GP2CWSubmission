@@ -18,10 +18,6 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
-
-
-
-
 	GameApplication::initScene();
 	// initialise array of 3 vertices
 
@@ -99,6 +95,8 @@ void MyGame::initScene()
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_DiffuseLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	colliding[0] = false;
+	colliding[1] = false;
 }
 
 void MyGame::destroyScene()
@@ -185,8 +183,7 @@ void MyGame::update()
 	m_CameraPos = camera.GetCameraPos();
 	m_LookatPos = camera.GetLookatPos();
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
-<<<<<<< HEAD
-	m_ViewMatrix = lookAt(m_CameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
 
 	/*mat4 translation = translate(mat4(1.0), vec3(0.0f, 0.0f, -1.0f));
 	mat4 rotationX = rotate(mat4(1.0f), 0.5f, vec3(1.0f, 0.0f, 0.0f));
@@ -194,9 +191,7 @@ void MyGame::update()
 	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
 	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
 	//m_TestObject->OnUpdate();
-=======
-	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
->>>>>>> origin/master
+	
 
 	for (auto& go : m_GameObjectList)
 	{
@@ -207,4 +202,36 @@ void MyGame::update()
 void MyGame::onKeyDown(SDL_Keycode keyCode)
 {
 	camera.OnKeyDown(keyCode);
+}
+
+void MyGame::CollisionDetected(vec3 min, vec3 max)
+{
+	GameApplication::CollisionDetected(min, max);
+	int i = 0;
+	for (auto& go : m_GameObjectList)
+	{
+		vec3 minBounds = go->GetMinBounds();
+		vec3 maxBounds = go->GetMaxBounds();
+		if ((min.x > minBounds.x || min.y > minBounds.y || min.z > minBounds.z) && (min.x < maxBounds.x || min.y < maxBounds.y || min.z < maxBounds.z))
+		{
+			colliding[i] = true;
+		}
+		else if ((max.x > minBounds.x || max.y > minBounds.y || max.z > minBounds.z) && (max.x < maxBounds.x || max.y < maxBounds.y || max.z < maxBounds.z))
+		{
+			colliding[i] = true;
+		}
+		else
+		{
+			colliding[i] = false;
+		}
+		i++;
+	}
+	if (colliding[0] == true || colliding[1] == true)
+	{
+		camera.SetBool(true);
+	}
+	else
+	{
+		camera.SetBool(false);
+	}
 }
