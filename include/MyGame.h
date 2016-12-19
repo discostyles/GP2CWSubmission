@@ -52,7 +52,8 @@ private:
 	vec3 m_CameraMin;
 	vec3 m_CameraMax;
 
-	bool colliding[2];
+	bool colliding[3];
+	bool collisionsActive;
 
 	Camera camera;
 

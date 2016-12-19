@@ -70,15 +70,16 @@ void MyGame::initScene()
 	//{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
 	};
 
-	string vShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl" };
-	string fShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl" };
-	string texPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_diff.png", ASSET_PATH + TEXTURE_PATH + "/earth_diff.png" };
-	string specPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_spec.png", ASSET_PATH + TEXTURE_PATH + "/earth_spec.png" };
-	string bumpPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_norm.png", ASSET_PATH + TEXTURE_PATH + "/earth_norm.png" };
-	string heightPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_height.png", ASSET_PATH + TEXTURE_PATH + "/earth_height.png" };
-	string modelPaths[] = { ASSET_PATH + MODEL_PATH + "/Earth.fbx", ASSET_PATH + MODEL_PATH + "/Earth.fbx" };
+	//Craig McLaren
+	string vShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl" };
+	string fShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl" };
+	string texPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_diff.png", ASSET_PATH + TEXTURE_PATH + "/earth_diff.png", ASSET_PATH + TEXTURE_PATH + "/bricks_diff.jpg" };
+	string specPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_spec.png", ASSET_PATH + TEXTURE_PATH + "/earth_spec.png", ASSET_PATH + TEXTURE_PATH + "/bricks_spec.png" };
+	string bumpPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_norm.png", ASSET_PATH + TEXTURE_PATH + "/earth_norm.png", ASSET_PATH + TEXTURE_PATH + "/bricks_norm.png" };
+	string heightPaths[] = { ASSET_PATH + TEXTURE_PATH + "/earth_height.png", ASSET_PATH + TEXTURE_PATH + "/earth_height.png", ASSET_PATH + TEXTURE_PATH + "/bricks_height.png" };
+	string modelPaths[] = { ASSET_PATH + MODEL_PATH + "/Earth.fbx", ASSET_PATH + MODEL_PATH + "/Earth.fbx", ASSET_PATH + MODEL_PATH + "/Earth.fbx" };
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		shared_ptr<GameObject> m_TestGO = shared_ptr<GameObject>(loadModelFromFile(modelPaths[i]));
 		m_TestGO->LoadShaders(vShaders[i], fShaders[i]);
@@ -97,8 +98,10 @@ void MyGame::initScene()
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_DiffuseLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	collisionsActive = true;
 	colliding[0] = false;
 	colliding[1] = false;
+	colliding[2] = false;
 }
 
 void MyGame::destroyScene()
@@ -186,7 +189,10 @@ void MyGame::update()
 	m_CameraMin = camera.GetMinBounds();
 	m_CameraPos = camera.GetCameraPos();
 	m_LookatPos = camera.GetLookatPos();
-	CollisionDetected();
+	if (collisionsActive)
+	{
+		CollisionDetected();
+	}
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
 	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
 
@@ -204,13 +210,21 @@ void MyGame::update()
 	}
 }
 
+// Craig McLaren
 void MyGame::onKeyDown(SDL_Keycode keyCode)
 {
 	camera.OnKeyDown(keyCode);
+
+	if (keyCode == SDLK_SPACE)
+	{
+		collisionsActive = !collisionsActive;
+		cout << "debug toggled";
+	}
 }
 
 void MyGame::CollisionDetected()
 {
+	// Craig McLaren
 	int i = 0;
 	for (auto& go : m_GameObjectList)
 	{
@@ -230,7 +244,7 @@ void MyGame::CollisionDetected()
 		}
 		i++;
 	}
-	if (colliding[0] == true || colliding[1] == true)
+	if (colliding[0] == true || colliding[1] == true || colliding[2] == true)
 	{
 		camera.SetBool(true);
 	}

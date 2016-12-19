@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "GameApplication.h"
 
+// Craig McLaren
 class Camera
 {
 public:

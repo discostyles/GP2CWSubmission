@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+//Craig McLaren
 Camera::Camera()
 {
 	m_CameraPos = vec3(0.0f, 0.0f, -15.0f);

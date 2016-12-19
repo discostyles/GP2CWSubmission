@@ -208,11 +208,13 @@ void GameObject::LoadShaders(const string & vsFilename, const string & fsFilenam
 	glDeleteShader(fragmentShaderProgram);
 }
 
+// Craig McLaren
 vec3 GameObject::GetMinBounds()
 {
 	return m_MinBounds + m_Position;
 }
 
+// Craig McLaren
 vec3 GameObject::GetMaxBounds()
 {
 	return m_MaxBounds + m_Position;
@@ -255,6 +257,7 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, binormal));
 }
 
+// Craig McLaren
 void GameObject::CalculateBoundingBox(Vertex *pVertex, int numberOfVertices)
 {
 	m_MinBounds.x = pVertex[0].position.x;
