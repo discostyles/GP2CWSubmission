@@ -213,7 +213,7 @@ void GameApplication::onKeyDown(SDL_Keycode keyCode)
 
 }
 
-void GameApplication::CollisionDetected(vec3 min, vec3 max)
+void GameApplication::CollisionDetected()
 {
 	
 }

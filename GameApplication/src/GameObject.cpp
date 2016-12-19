@@ -210,12 +210,12 @@ void GameObject::LoadShaders(const string & vsFilename, const string & fsFilenam
 
 vec3 GameObject::GetMinBounds()
 {
-	return m_MinBounds;
+	return m_MinBounds + m_Position;
 }
 
 vec3 GameObject::GetMaxBounds()
 {
-	return m_MaxBounds;
+	return m_MaxBounds + m_Position;
 }
 
 void GameObject::SetObjectPosition(const vec3 & position)

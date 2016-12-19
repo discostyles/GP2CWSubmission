@@ -9,6 +9,8 @@ const std::string MODEL_PATH = "/models";
 MyGame::MyGame()
 {
 	m_RotationX = 0;
+	m_CameraMax = vec3(0.0f, 0.0f, 0.0f);
+	m_CameraMin = vec3(0.0f, 0.0f, 0.0f);
 }
 
 MyGame::~MyGame()
@@ -180,8 +182,11 @@ void MyGame::render()
 void MyGame::update()
 {
 	GameApplication::update();
+	m_CameraMax = camera.GetMaxBounds();
+	m_CameraMin = camera.GetMinBounds();
 	m_CameraPos = camera.GetCameraPos();
 	m_LookatPos = camera.GetLookatPos();
+	CollisionDetected();
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
 	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
 
@@ -204,19 +209,18 @@ void MyGame::onKeyDown(SDL_Keycode keyCode)
 	camera.OnKeyDown(keyCode);
 }
 
-void MyGame::CollisionDetected(vec3 min, vec3 max)
+void MyGame::CollisionDetected()
 {
-	GameApplication::CollisionDetected(min, max);
 	int i = 0;
 	for (auto& go : m_GameObjectList)
 	{
 		vec3 minBounds = go->GetMinBounds();
 		vec3 maxBounds = go->GetMaxBounds();
-		if ((min.x > minBounds.x || min.y > minBounds.y || min.z > minBounds.z) && (min.x < maxBounds.x || min.y < maxBounds.y || min.z < maxBounds.z))
+		if ((m_CameraMin.x > minBounds.x && m_CameraMin.y > minBounds.y && m_CameraMin.z > minBounds.z) && (m_CameraMin.x < maxBounds.x && m_CameraMin.y < maxBounds.y && m_CameraMin.z < maxBounds.z))
 		{
 			colliding[i] = true;
 		}
-		else if ((max.x > minBounds.x || max.y > minBounds.y || max.z > minBounds.z) && (max.x < maxBounds.x || max.y < maxBounds.y || max.z < maxBounds.z))
+		else if ((m_CameraMax.x > minBounds.x && m_CameraMax.y > minBounds.y && m_CameraMax.z > minBounds.z) && (m_CameraMax.x < maxBounds.x && m_CameraMax.y < maxBounds.y && m_CameraMax.z < maxBounds.z))
 		{
 			colliding[i] = true;
 		}

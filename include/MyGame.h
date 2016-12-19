@@ -27,7 +27,7 @@ public:
 	float m_RotationX;
 
 	void onKeyDown(SDL_Keycode keyCode);
-	void CollisionDetected(vec3 min, vec3 max);
+	void CollisionDetected();
 
 private:
 	/*GLuint m_VBO;
@@ -49,6 +49,8 @@ private:
 	GameObject* m_TeaPot;
 	vec3 m_CameraPos;
 	vec3 m_LookatPos;
+	vec3 m_CameraMin;
+	vec3 m_CameraMax;
 
 	bool colliding[2];
 

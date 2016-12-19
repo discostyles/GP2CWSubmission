@@ -17,6 +17,9 @@ public:
 
 	void SetBool(bool collision);
 	
+	vec3 GetMinBounds();
+	vec3 GetMaxBounds();
+	
 
 private:
 	vec3 m_CameraPos;

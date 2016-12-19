@@ -48,7 +48,7 @@ public:
 
 	virtual void onKeyDown(SDL_Keycode keyCode);
 
-	virtual void CollisionDetected(vec3 min, vec3 max);
+	virtual void CollisionDetected();
 
 protected:
 	ProgramOptions m_Options;
