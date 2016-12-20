@@ -117,7 +117,7 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
 
-	if (speclarLocation != -1)
+	if (normalLocation != -1)
 	{
 		glUniform1i(normalLocation, 2);
 	}
@@ -127,16 +127,29 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, m_HeightMap);
 
-	if (speclarLocation != -1)
+	if (heightMapLocation != -1)
 	{
 		glUniform1i(heightMapLocation, 3);
 	}
 
+	GLint uniformTexture = glGetUniformLocation(m_ShaderProgram, "fbo_Texture");
+	glBindSampler(4, m_Sampler);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	if (uniformTexture != -1)
+	{
+		glUniform1i(uniformTexture, 4);
+	}
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	//glDrawArrays(GL_TRIANGLES, 0, m_NumberOfVerts);
-	//glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, 0);
+	
 
 	//generate a FBO
-	glGenFramebuffers(1, &m_FBO);
+	/*glGenFramebuffers(1, &m_FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
 	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
@@ -160,12 +173,39 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	glViewport(0, 0, 1024, 768);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, 1024, 768);
+	glViewport(0, 0, 1024, 768);*/
+
+	
 }
 
 void GameObject::OnInit()
 {
-	
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &m_RenderedTexture);
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glGenRenderbuffers(1, &m_DBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, 1024, 768);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glGenFramebuffers(1, &m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RenderedTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DBO);
+	/*GLenum status;
+	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		fprintf(stderr, "glCheckFrameBufferStatus: error %p", status);
+		return 0;
+	}*/
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -174,6 +214,9 @@ void GameObject::OnDestroy()
 	glDeleteProgram(m_ShaderProgram);
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
+	glDeleteRenderbuffers(1, &m_DBO);
+	glDeleteTextures(1, &m_RenderedTexture);
+	glDeleteFramebuffers(1, &m_FBO);
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteSamplers(1, &m_Sampler);
 	//glDeleteFramebuffers(1, &framebuffer);
@@ -273,6 +316,15 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, 1024, 768);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 	//define layout of vertex
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, position));

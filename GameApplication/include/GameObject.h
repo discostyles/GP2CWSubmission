@@ -41,6 +41,11 @@ public:
 		m_AmbientMaterialColour = colour;
 	};
 
+	GLuint GetRenderTexture()
+	{
+		return m_RenderedTexture;
+	};
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
