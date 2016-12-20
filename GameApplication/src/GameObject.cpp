@@ -5,8 +5,11 @@ GameObject::GameObject()
 	m_VBO = 0;
 	m_VAO = 0;
 	m_IBO = 0;
+	m_FBO = 0;
+	m_DBO = 0;
 	m_ShaderProgram = 0;
 	m_DiffuseTexture = 0;
+	m_RenderedTexture = 0;
 	m_Sampler = 0;
 	m_SpeclarTex = 0;
 	m_NormalTexture = 0;
@@ -130,11 +133,39 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	}
 
 	//glDrawArrays(GL_TRIANGLES, 0, m_NumberOfVerts);
-	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, 0);
+
+	//generate a FBO
+	glGenFramebuffers(1, &m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 768, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glGenRenderbuffers(1, &m_DBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DBO);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_RenderedTexture, 0);
+
+	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, DrawBuffers);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glViewport(0, 0, 1024, 768);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, 1024, 768);
 }
 
 void GameObject::OnInit()
 {
+	
 
 }
 
@@ -294,3 +325,4 @@ void GameObject::CalculateBoundingBox(Vertex *pVertex, int numberOfVertices)
 		}
 	}
 }
+

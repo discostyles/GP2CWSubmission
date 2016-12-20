@@ -19,6 +19,7 @@ public:
 	/*GLuint m_Texture;
 	GLuint m_Sampler;*/
 
+
 	// matrices
 	mat4 m_ViewMatrix;
 	mat4 m_ProjMatrix;
@@ -32,6 +33,8 @@ public:
 private:
 	/*GLuint m_VBO;
 	GLuint m_VAO;*/
+
+	
 
 
 	//GLuint m_DepthFBO;
