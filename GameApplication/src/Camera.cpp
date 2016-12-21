@@ -5,7 +5,9 @@ Camera::Camera()
 {
 	m_CameraPos = vec3(0.0f, 0.0f, -15.0f);
 	m_LookatPos = vec3(0.0f, 0.0f, 0.0f);
-	m_Rotation = vec3(0.0f, 0.0f, 0.0f);
+	m_Rotation = vec3(0.0f, 45.0f, 0.0f);
+	m_LookatPos.x = cos(m_Rotation.y);
+	m_LookatPos.z = sin(m_Rotation.y);
 	colliding = false;
 	m_MinBounds = m_CameraPos - 0.5f;
 	m_MaxBounds = m_CameraPos + 0.5f;

@@ -14,7 +14,7 @@ find_package(assimp REQUIRED)
 
 add_subdirectory(Utils)
 
-add_library(GameApplication STATIC src/Camera.cpp src/ModelLoading.cpp src/GameObject.cpp src/GameApplication.cpp src/Shader.cpp src/Texture.cpp include/Camera.h include/ModelLoading.h include/GameObject.h include/Common.h include/GameApplication.h include/Shader.h include/Texture.h include/Vertex.h)
+add_library(GameApplication STATIC src/RenderBuffer.cpp src/PostProcessing.cpp src/Camera.cpp src/ModelLoading.cpp src/GameObject.cpp src/GameApplication.cpp src/Shader.cpp src/Texture.cpp include/RenderBuffer.h include/PostProcessing.h include/Camera.h include/ModelLoading.h include/GameObject.h include/Common.h include/GameApplication.h include/Shader.h include/Texture.h include/Vertex.h)
 
 include_directories(GameApplication include/ Utils/include ${ASSIMP_INCLUDE_DIR} ${TINYXML_INCLUDE_DIR} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2_INCLUDE_DIR} ${OPENGL_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 # create the program

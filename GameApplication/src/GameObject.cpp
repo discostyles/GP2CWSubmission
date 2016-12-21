@@ -5,8 +5,11 @@ GameObject::GameObject()
 	m_VBO = 0;
 	m_VAO = 0;
 	m_IBO = 0;
+	/*m_FBO = 0;
+	m_DBO = 0;*/
 	m_ShaderProgram = 0;
 	m_DiffuseTexture = 0;
+	//m_RenderedTexture = 0;
 	m_Sampler = 0;
 	m_SpeclarTex = 0;
 	m_NormalTexture = 0;
@@ -114,7 +117,7 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
 
-	if (speclarLocation != -1)
+	if (normalLocation != -1)
 	{
 		glUniform1i(normalLocation, 2);
 	}
@@ -124,17 +127,85 @@ void GameObject::OnRender(mat4 & view, mat4 & projection)
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, m_HeightMap);
 
-	if (speclarLocation != -1)
+	if (heightMapLocation != -1)
 	{
 		glUniform1i(heightMapLocation, 3);
 	}
 
+	//// Craig McLaren
+	//GLint uniformTexture = glGetUniformLocation(m_ShaderProgram, "fboTexture");
+	//glBindSampler(4, m_Sampler);
+	//glActiveTexture(GL_TEXTURE4);
+	//glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	//if (uniformTexture != -1)
+	//{
+	//	glUniform1i(uniformTexture, 4);
+	//}
+	
+
 	//glDrawArrays(GL_TRIANGLES, 0, m_NumberOfVerts);
 	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, 0);
+	
+
+	//generate a FBO
+	/*glGenFramebuffers(1, &m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 768, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glGenRenderbuffers(1, &m_DBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DBO);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_RenderedTexture, 0);
+
+	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, DrawBuffers);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glViewport(0, 0, 1024, 768);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, 1024, 768);*/
+
+	
 }
 
+//Craig McLaren
 void GameObject::OnInit()
 {
+	/*glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &m_RenderedTexture);
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+*/
+	/*glGenRenderbuffers(1, &m_DBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, 1024, 768);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);*/
+
+	/*glGenFramebuffers(1, &m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RenderedTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DBO);*/
+	/*GLenum status;
+	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		fprintf(stderr, "glCheckFrameBufferStatus: error %p", status);
+		return 0;
+	}*/
+	
 
 }
 
@@ -143,6 +214,9 @@ void GameObject::OnDestroy()
 	glDeleteProgram(m_ShaderProgram);
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
+	glDeleteRenderbuffers(1, &m_DBO);
+	glDeleteTextures(1, &m_RenderedTexture);
+	glDeleteFramebuffers(1, &m_FBO);
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteSamplers(1, &m_Sampler);
 	//glDeleteFramebuffers(1, &framebuffer);
@@ -161,6 +235,16 @@ void GameObject::LoadDiffuseTexture(const string & filename)
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &m_RenderedTexture);
+	glBindTexture(GL_TEXTURE_2D, m_RenderedTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1024, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GameObject::LoadSpeclarTexture(const string & filename)
@@ -237,11 +321,28 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 	glGenBuffers(1, &m_IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numberOfIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	/*glGenRenderbuffers(1, &m_DBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, 1024, 768);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glGenFramebuffers(1, &m_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RenderedTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DBO);*/
+	
 	//generate a VAO
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	/*glBindRenderbuffer(GL_RENDERBUFFER, m_DBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);*/
+
+	
+		
+
 	//define layout of vertex
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, position));
@@ -255,6 +356,8 @@ void GameObject::CopyVertexData(Vertex *pVertex, unsigned int* indices, int numb
 	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, tangent));
 	glEnableVertexAttribArray(5);
 	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)offsetof(Vertex, binormal));
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 // Craig McLaren
@@ -294,3 +397,4 @@ void GameObject::CalculateBoundingBox(Vertex *pVertex, int numberOfVertices)
 		}
 	}
 }
+

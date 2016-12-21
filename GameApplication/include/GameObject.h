@@ -41,10 +41,17 @@ public:
 		m_AmbientMaterialColour = colour;
 	};
 
+	GLuint GetRenderTexture()
+	{
+		return m_RenderedTexture;
+	};
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
 	GLuint m_IBO;
+	GLuint m_FBO;	
+	GLuint m_DBO;
 
 	GLuint m_ShaderProgram;
 
@@ -55,6 +62,7 @@ private:
 	GLuint m_SpeclarTex;
 	GLuint m_NormalTexture;
 	GLuint m_HeightMap;
+	GLuint m_RenderedTexture;
 
 	vec3 m_Position;
 	vec3 m_Rotation;

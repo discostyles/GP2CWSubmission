@@ -21,55 +21,6 @@ MyGame::~MyGame()
 void MyGame::initScene()
 {
 	GameApplication::initScene();
-	// initialise array of 3 vertices
-
-	unsigned int Indices[] = { 0, 1, 2,
-							   2, 3, 1};
-
-	Vertex verts[]= 
-	{{vec3(-0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)},	//tri 1 face 1
-	{vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)},
-	{vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)},
-	//{vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)},	//tri 2 face 1
-	{vec3(0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)},
-	//{vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)},
-
-	//{ -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },	//tri 1 face 1
-	//{ 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
-	//{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-	//{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },	//tri 2 face 1
-	//{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f },
-	//{ 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
-
-	//{ 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },	//tri 1 face 3 
-	//{ 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },	//tri 2 face 3 
-	//{ 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-
-	//{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },	//tri 1 face 4 
-	//{ -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },	//tri 2 face 4 
-	//{ -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	//{ -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-
-	//{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },	//tri 1 face 5 
-	//{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },	//tri 2 face 5 
-	//{ 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-
-	//{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },	//tri 1 face 6 
-	//{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f },	//tri 2 face 6 
-	//{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	//{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f },
-	};
-
 	//Craig McLaren
 	string vShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl" };
 	string fShaders[] = { ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl", ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl" };
@@ -102,11 +53,16 @@ void MyGame::initScene()
 	colliding[0] = false;
 	colliding[1] = false;
 	colliding[2] = false;
+
+	m_PostProcess = shared_ptr<PostProcessing>(new PostProcessing());
+	m_PostProcess->OnInit();
 }
 
 void MyGame::destroyScene()
 {
 	GameApplication::destroyScene();
+
+	m_PostProcess->Destroy();
 
 	for (auto& go : m_GameObjectList)
 	{
@@ -117,34 +73,8 @@ void MyGame::destroyScene()
 
 void MyGame::render()
 {
-
-
-	//
-	//
-	//			Shadow mapping (unfinished)
-	//
-	////////////////////////////////////////////////////
-
-
-	//glGenTextures(1, &depthMap);
-	//glBindTexture(GL_TEXTURE_2D, depthMap);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-	//	SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	//glBindFramebuffer(GL_FRAMEBUFFER, m_DepthFBO);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	//glDrawBuffer(GL_NONE);
-	//glReadBuffer(GL_NONE);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
-
-
 	GameApplication::render();
+	//m_PostProcess->Bind();
 	for (auto& go : m_GameObjectList)
 	{
 
@@ -180,11 +110,13 @@ void MyGame::render()
 
 		go->OnRender(m_ViewMatrix, m_ProjMatrix);
 	}
+	//m_PostProcess->UnBind();
 }
 
 void MyGame::update()
 {
 	GameApplication::update();
+	// Craig McLaren
 	m_CameraMax = camera.GetMaxBounds();
 	m_CameraMin = camera.GetMinBounds();
 	m_CameraPos = camera.GetCameraPos();
@@ -193,16 +125,9 @@ void MyGame::update()
 	{
 		CollisionDetected();
 	}
+	//
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
 	m_ViewMatrix = lookAt(m_CameraPos, m_LookatPos + m_CameraPos, vec3(0.0f, 1.0f, 0.0f));
-
-	/*mat4 translation = translate(mat4(1.0), vec3(0.0f, 0.0f, -1.0f));
-	mat4 rotationX = rotate(mat4(1.0f), 0.5f, vec3(1.0f, 0.0f, 0.0f));
-	mat4 rotationY = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 1.0f, 0.0f));
-	mat4 rotationZ = rotate(mat4(1.0f), 0.5f, vec3(0.0f, 0.0f, 1.0f));
-	mat4 rotationAll = rotationX * rotationY * rotationZ;*/
-	//m_TestObject->OnUpdate();
-	
 
 	for (auto& go : m_GameObjectList)
 	{

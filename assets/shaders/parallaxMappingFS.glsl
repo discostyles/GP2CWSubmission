@@ -29,7 +29,7 @@ uniform sampler2D diffuseSampler;
 uniform sampler2D speclarSampler;
 uniform sampler2D normalSampler;
 uniform sampler2D heightMap;
-
+uniform sampler2D fboTexture;
 
 
 void main()
@@ -55,7 +55,7 @@ void main()
 
 	vec4 diffuseTextureColour = texture(diffuseSampler, correctedTexCoords);
 
-	//FragColor = vec4(height, 0.0f, 0.0f, 1.0f);
+	//FragColor = texture2D(fbo_Texture, vertexTextureCoordsOut);
 
 	FragColor = (ambientMaterialColour*directionLight.ambientColour) + (diffuseTextureColour*directionLight.diffuseColour*diffuseTerm) + (speclarTextureColour*directionLight.specularColour*specularTerm);
 }
